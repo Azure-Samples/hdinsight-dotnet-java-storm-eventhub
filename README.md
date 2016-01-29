@@ -67,5 +67,5 @@ Once the topology has been submitted, the **Storm Topologies Viewer** should app
 
 ##Kill the topologies
 
-You should kill the topologies after they have been running for a bit, to avoid excess costs.
+In the **Storm Topologies Viewer**, select each topology and then select the **Kill** button at the top of the Topology Viewer.
 
