@@ -27,7 +27,7 @@ namespace EventHubReader
         public ITopologyBuilder GetTopologyBuilder()
         {
             //The friendly name of this topology is 'EventHubReader'
-            TopologyBuilder topologyBuilder = new TopologyBuilder("EventHubReader");
+            TopologyBuilder topologyBuilder = new TopologyBuilder("EventHubReader" + DateTime.Now.ToString("yyyyMMddHHmmss"));
 
             //Get the partition count
             int partitionCount = Properties.Settings.Default.EventHubPartitionCount;
