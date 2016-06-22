@@ -4,7 +4,8 @@ platforms: dotnet,java
 author: blackmist
 ---
 
-# hdinsight-dotnet-java-storm-eventhub
+# Read and write from EventHubs using a hybrid .NET/Java Storm topology
+
 An example of using a hybrid dotnet/Java-based Apache Storm topology to work with Azure Event Hubs
 
 ##Prerequisites
@@ -69,3 +70,6 @@ Once the topology has been submitted, the **Storm Topologies Viewer** should app
 
 In the **Storm Topologies Viewer**, select each topology and then select the **Kill** button at the top of the Topology Viewer.
 
+## Project code of conduct
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
