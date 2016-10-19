@@ -10,6 +10,7 @@ using Microsoft.SCP.Rpc.Generated;
 using Newtonsoft.Json.Linq;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using System.Configuration;
 
 namespace EventHubReader
 {
@@ -23,15 +24,22 @@ namespace EventHubReader
         private Context ctx;
         //For accessing Table storage
         private CloudTable table;
+        //To hold configuration values
+        Configuration configuration;
 
         /// <summary>
         /// Bolt constructor
         /// </summary>
         /// <param name="ctx">Topology context</param>
-        public Bolt(Context ctx)
+        public Bolt(Context ctx, Dictionary<string, Object> parms)
         {
             //Topology context > instance context
             this.ctx = ctx;
+            //Load values from configuration
+            if(parms.ContainsKey(Constants.USER_CONFIG))
+            {
+                this.configuration = parms[Constants.USER_CONFIG] as System.Configuration.Configuration;
+            }
 
             //Define the input stream
             Dictionary<string, List<Type>> inputSchema = new Dictionary<string, List<Type>>();
@@ -41,10 +49,10 @@ namespace EventHubReader
             //Use a custom deserializer. This matches with the one declared in Program.cs
             this.ctx.DeclareCustomizedDeserializer(new CustomizedInteropJSONDeserializer());
             //Connect to storage
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnection);
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(this.configuration.AppSettings.Settings["StorageConnection"].Value);
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
             //Create a table named 'events' if it doesn't already exist
-            table = tableClient.GetTableReference(Properties.Settings.Default.TableName);
+            table = tableClient.GetTableReference(this.configuration.AppSettings.Settings["TableName"].Value);
             table.CreateIfNotExists();
         }
         /// <summary>
@@ -55,7 +63,7 @@ namespace EventHubReader
         /// <returns></returns>
         public static Bolt Get(Context ctx, Dictionary<string, Object> parms)
         {
-            return new Bolt(ctx);
+            return new Bolt(ctx, parms);
         }
         /// <summary>
         /// Process inbound data

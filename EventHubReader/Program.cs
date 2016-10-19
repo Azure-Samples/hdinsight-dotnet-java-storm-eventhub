@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SCP;
 using Microsoft.SCP.Topology;
+using System.Configuration;
 
 namespace EventHubReader
 {
@@ -29,21 +30,19 @@ namespace EventHubReader
             //The friendly name of this topology is 'EventHubReader'
             TopologyBuilder topologyBuilder = new TopologyBuilder("EventHubReader" + DateTime.Now.ToString("yyyyMMddHHmmss"));
 
-            //Get the partition count
-            int partitionCount = Properties.Settings.Default.EventHubPartitionCount;
-            //Create the configuration for the EventHub spout
-            EventHubSpoutConfig ehConfig = new EventHubSpoutConfig(
-                Properties.Settings.Default.EventHubPolicyName,
-                Properties.Settings.Default.EventHubPolicyKey,
-                Properties.Settings.Default.EventHubNamespace,
-                Properties.Settings.Default.EventHubName,
+            //Set the partition count
+            var partitionCount = int.Parse(ConfigurationManager.AppSettings["EventHubPartitions"]);
+            //Set the Java spout component
+            topologyBuilder.SetEventHubSpout(
+                "com.microsoft.eventhubs.spout.EventHubSpout",
+                new EventHubSpoutConfig(
+                    ConfigurationManager.AppSettings["EventHubSharedAccessKeyName"],
+                    ConfigurationManager.AppSettings["EventHubSharedAccessKey"],
+                    ConfigurationManager.AppSettings["EventHubNamespace"],
+                    ConfigurationManager.AppSettings["EventHubEntityPath"],
+                    partitionCount),
                 partitionCount);
 
-            //Set the spout to use the JavaComponentConstructor
-            topologyBuilder.SetEventHubSpout(
-                "EventHubSpout",  //Friendly name of this component
-                ehConfig,      //Pass in the configuration
-                partitionCount);  //Parallelism hint - partition count
 
             // Use a JSON Serializer to serialize data from the Java Spout into a JSON string
             List<string> javaSerializerInfo = new List<string>() { "microsoft.scp.storm.multilang.CustomizedInteropJSONSerializer" };
@@ -59,11 +58,11 @@ namespace EventHubReader
                 partitionCount,                                      //Parallelisim hint - partition count
                 true).                                               //Enable ACK's, needed for the spout    
                 DeclareCustomizedJavaSerializer(javaSerializerInfo). //Use the serializer when sending to the bolt
-                shuffleGrouping("EventHubSpout");                    //Consume data from the 'EventHubSpout' component
+                shuffleGrouping("com.microsoft.eventhubs.spout.EventHubSpout");                    //Consume data from the spout component
 
             //Create a new configuration for the topology
             StormConfig config = new StormConfig();
-            config.setNumWorkers(1); //Set the number of workers
+            config.setNumWorkers(partitionCount); //Set the number of workers to partition count
 
             //Set the configuration for the topology
             topologyBuilder.SetTopologyConfig(config);

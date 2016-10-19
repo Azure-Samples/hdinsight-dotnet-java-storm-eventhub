@@ -16,7 +16,7 @@ An example of using a hybrid dotnet/Java-based Apache Storm topology to work wit
 
 * **HDInsight Tools for Visual Studio** - [http://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-visual-studio-tools-get-started/](http://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-visual-studio-tools-get-started/) has the steps to install and configure. This provides C# Storm topology templates and some utilities for working with HDInsight
 
-* **eventhubs-storm-spout-0.9-jar-with-dependencies.jar** - this contains the Event Hub Spout and Bolt. You an find this in the **lib** folder of the [https://github.com/hdinsight/hdinsight-storm-examples](https://github.com/hdinsight/hdinsight-storm-examples) repository
+* **eventhubs-storm-spout** jar file - this contains the Event Hub Spout and Bolt. You an find this in the **lib/eventhubs** folder of the [https://github.com/hdinsight/hdinsight-storm-examples](https://github.com/hdinsight/hdinsight-storm-examples) repository
 
 * **Azure Event Hub** - you need to create an Event Hub, with two policies defined - one that can send, and one that can listen. You will need the following information from the Event Hub configuration.
 
@@ -38,11 +38,21 @@ An example of using a hybrid dotnet/Java-based Apache Storm topology to work wit
 
 * **Storm on HDInsight cluster** - the Azure HDInsight cluster that you will submit the topologies to
 
+## SCP.NET package version
+
+The SCP.NET package version that you use for this project depends on the version of Storm installed on your HDInsight cluster. Use the following table to determine what SCP.NET version you must use in your project:
+
+| HDInsight version | Apache Storm version | SCP.NET version |
+|:-----------------:|:--------------------:|:---------------:|
+| 3.3 | 0.10.# | 0.10.#.# |
+| 3.4 | 0.10.# | 0.10.#.# |
+| 3.5 | 1.0.# | 1.0.#.# |
+
 ##Build and deploy
 
 The two topologies in this project work together - EventHubWriter writes events, while EventHubReader reads them. You can deploy them in any order, but when both are deployed, events should flow from the Writer, to the Reader, then to Table Storage.
 
-1. The configuration for Event Hub and Table Storage is stored in Application Settings. To access these, right-click on the project name (**EventHubWriter** or **EventHubReader**,) in **Solution Explorer** and select **Properties**, then select **Settings**. Fill in the values needed to connect to Azure Event Hub and (for the reader,) Azure Table Storage. For the **TableName** entry, enter the name of the table you want events to be stored in.
+1. The configuration for Event Hub and Table Storage is stored in the __App.config__ for each project. Fill in the values needed to connect to Azure Event Hub and (for the reader,) Azure Table Storage. For the **TableName** entry, enter the name of the table you want events to be stored in.
 
 2. In **Server Explorer**, right-click the solution (**EventHubExample**,) and select **Build**. This will restore any missing packages and build the project.
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SCP;
 using Microsoft.SCP.Topology;
+using System.Configuration;
 
 namespace EventHubWriter
 {
@@ -29,7 +30,7 @@ namespace EventHubWriter
             TopologyBuilder topologyBuilder = new TopologyBuilder("EventHubWriter" + DateTime.Now.ToString("yyyyMMddHHmmss"));
 
             //Get the partition count
-            int partitionCount = Properties.Settings.Default.EventHubPartitionCount;
+            int partitionCount = int.Parse(ConfigurationManager.AppSettings["EventHubPartitionCount"]);
             //Create a deserializer for JSON to java.lang.String
             //so that Java components can consume data emitted by
             //C# components
@@ -52,11 +53,11 @@ namespace EventHubWriter
                 JavaComponentConstructor.CreateFromClojureExpr(
                 String.Format(@"(com.microsoft.eventhubs.bolt.EventHubBolt. (com.microsoft.eventhubs.bolt.EventHubBoltConfig. " +
                 @"""{0}"" ""{1}"" ""{2}"" ""{3}"" ""{4}"" {5}))",
-                Properties.Settings.Default.EventHubPolicyName,
-                Properties.Settings.Default.EventHubPolicyKey,
-                Properties.Settings.Default.EventHubNamespace,
+                ConfigurationManager.AppSettings["EventHubPolicyName"],
+                ConfigurationManager.AppSettings["EventHubPolicyKey"],
+                ConfigurationManager.AppSettings["EventHubNamespace"],
                 "servicebus.windows.net", //suffix for servicebus fqdn
-                Properties.Settings.Default.EventHubName,
+                ConfigurationManager.AppSettings["EventHubName"],
                 "true"));
 
             topologyBuilder.SetJavaBolt(
