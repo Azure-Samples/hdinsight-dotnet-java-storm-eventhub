@@ -30,12 +30,6 @@ An example of using a hybrid dotnet/Java-based Apache Storm topology to work wit
 	
 	For information on creating an Event Hub and policies, see [Get Started with Event Hubs](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-csharp-ephcs-getstarted/).
 
-* **Azure Table Storage** - you need to create a Storage Account
-
-    * **Storage account name** - the name of the storage account
-
-    * **Storage account key** - the key of the storage account
-
 * **Storm on HDInsight cluster** - the Azure HDInsight cluster that you will submit the topologies to
 
 ## SCP.NET package version
@@ -70,11 +64,16 @@ Once the topology has been submitted, the **Storm Topologies Viewer** should app
 
 ##View output
 
-1. In **Server Explorer**, expand **Azure**, **Storage**, and the **Storage Account** you created earlier.
+1. In **Storm Topologies Viewer**, select the  **EventHubWriter** topology.
 
-2. Expand **Tables**, then double click on the table you used as the output for the **EventHubReader**.
+2. In the graph view, double-click the __LogBolt__ component. This will open the __Component Summary__ page for the bolt.
 
-3. Once the table editor appears, you should see that the table has been populated with the random data created by the EventHubWriter, which is read by the EventHubReader, and then stored into Table Storage.
+3. In the __Executors__ section, select one of the links in the __Port__ column. This will display information logged by the component. The logged information is similar to the following:
+
+        2016-10-20 13:26:44.186 m.s.s.b.ScpNetBolt [INFO] Processing tuple: source: com.microsoft.eventhubs.spout.EventHubSpout:7, stream: default, id: {5769732396213255808=520853934697489134}, [{"deviceId":3,"deviceValue":1379915540}]
+        2016-10-20 13:26:44.234 m.s.s.b.ScpNetBolt [INFO] Processing tuple: source: com.microsoft.eventhubs.spout.EventHubSpout:7, stream: default, id: {7154038361491319965=4543766486572976404}, [{"deviceId":3,"deviceValue":459399321}]
+        2016-10-20 13:26:44.335 m.s.s.b.ScpNetBolt [INFO] Processing tuple: source: com.microsoft.eventhubs.spout.EventHubSpout:6, stream: default, id: {513308780877039680=-7571211415704099042}, [{"deviceId":5,"deviceValue":845561159}]
+        2016-10-20 13:26:44.445 m.s.s.b.ScpNetBolt [INFO] Processing tuple: source: com.microsoft.eventhubs.spout.EventHubSpout:7, stream: default, id: {-2409895457033895206=5479027861202203517}, [{"deviceId":8,"deviceValue":2105860655}]
 
 ##Kill the topologies
 

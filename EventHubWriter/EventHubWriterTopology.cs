@@ -15,7 +15,7 @@ namespace EventHubWriter
     ///     Data is then written to Event Hub using the Java bolt
     /// </summary>
     [Active(true)]
-    class Program : TopologyDescriptor
+    class EventHubWriter : TopologyDescriptor
     {
         static void Main(string[] args)
         {

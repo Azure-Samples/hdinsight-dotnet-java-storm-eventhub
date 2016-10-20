@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\build\Microsoft.SCP.Net.SDK.props" Condition="Exists('..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\build\Microsoft.SCP.Net.SDK.props')" />
+  <Import Project="..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\build\Microsoft.SCP.Net.SDK.props" Condition="Exists('..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\build\Microsoft.SCP.Net.SDK.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <Import Project="Microsoft.SCP.Net.SDK\build\Microsoft.SCP.Net.SDK.props" Condition="Exists('Microsoft.SCP.Net.SDK\build\Microsoft.SCP.Net.SDK.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,8 +9,8 @@
     <ProjectGuid>{45EA7BEF-B033-4DDC-93EE-F659B3669E62}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EventHubReader</RootNamespace>
-    <AssemblyName>EventHubReader</AssemblyName>
+    <RootNamespace>AzureEventHubsReaderStormApplication</RootNamespace>
+    <AssemblyName>AzureEventHubsReaderStormApplication</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -37,90 +36,69 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\lib\net45\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.Edm, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Edm.5.7.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.OData, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.OData.5.7.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.Services.Client, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Services.Client.5.7.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+    <Reference Include="Microsoft.SCPLogger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\lib\net45\Microsoft.SCPLogger.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.SCPNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\lib\net45\Microsoft.SCPNet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.2.1\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Storage, Version=7.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAzure.Storage.7.2.1\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+      <HintPath>..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\lib\net45\Microsoft.SCPNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SCPHost, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\lib\net45\SCPHost.exe</HintPath>
+      <HintPath>..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\lib\net45\SCPHost.exe</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SCPLogger.Log4net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\lib\net45\SCPLogger.Log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SCPPerfCounter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\lib\net45\SCPPerfCounter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SCPPerfCounterWrapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\lib\net45\SCPPerfCounterWrapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Spatial, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Spatial.5.7.0\lib\net40\System.Spatial.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Thrift, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\lib\net45\Thrift.dll</HintPath>
+      <HintPath>..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\lib\net45\Thrift.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ZooKeeperNet, Version=3.4.6.1, Culture=neutral, PublicKeyToken=fefd2c046da35b56, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\lib\net45\ZooKeeperNet.dll</HintPath>
+      <HintPath>..\packages\ZooKeeper.Net.3.4.6.2\lib\net40\ZooKeeperNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Device.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Bolt.cs" />
+    <Compile Include="EventHubsReaderTopology.cs" />
+    <Compile Include="LogBolt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    <None Include="SubmitConfig.xml" />
+    <None Include="Microsoft.SCPNet.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -128,10 +106,10 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\build\Microsoft.SCP.Net.SDK.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\build\Microsoft.SCP.Net.SDK.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\build\Microsoft.SCP.Net.SDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\build\Microsoft.SCP.Net.SDK.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\build\Microsoft.SCP.Net.SDK.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\build\Microsoft.SCP.Net.SDK.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\build\Microsoft.SCP.Net.SDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\build\Microsoft.SCP.Net.SDK.targets'))" />
   </Target>
-  <Import Project="..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\build\Microsoft.SCP.Net.SDK.targets" Condition="Exists('..\packages\Microsoft.SCP.Net.SDK.1.0.0.1\build\Microsoft.SCP.Net.SDK.targets')" />
+  <Import Project="..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\build\Microsoft.SCP.Net.SDK.targets" Condition="Exists('..\packages\Microsoft.SCP.Net.SDK.0.10.0.6\build\Microsoft.SCP.Net.SDK.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
