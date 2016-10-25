@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EventHubReader")]
+[assembly: AssemblyTitle("AzureEventHubsReaderStormApplication")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("EventHubReader")]
+[assembly: AssemblyProduct("AzureEventHubsReaderStormApplication")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0d426437-580d-446f-afe9-21d3886a13fb")]
+[assembly: Guid("3b007516-368d-40a8-8fa4-0e8a02c1c25a")]
 
 // Version information for an assembly consists of the following four values:
 //

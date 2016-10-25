@@ -16,7 +16,7 @@ An example of using a hybrid dotnet/Java-based Apache Storm topology to work wit
 
 * **HDInsight Tools for Visual Studio** - [http://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-visual-studio-tools-get-started/](http://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-visual-studio-tools-get-started/) has the steps to install and configure. This provides C# Storm topology templates and some utilities for working with HDInsight
 
-* **eventhubs-storm-spout-0.9-jar-with-dependencies.jar** - this contains the Event Hub Spout and Bolt. You an find this in the **lib** folder of the [https://github.com/hdinsight/hdinsight-storm-examples](https://github.com/hdinsight/hdinsight-storm-examples) repository
+* **eventhubs-storm-spout** jar file - this contains the Event Hub Spout and Bolt. You an find this in the **lib/eventhubs** folder of the [https://github.com/hdinsight/hdinsight-storm-examples](https://github.com/hdinsight/hdinsight-storm-examples) repository
 
 * **Azure Event Hub** - you need to create an Event Hub, with two policies defined - one that can send, and one that can listen. You will need the following information from the Event Hub configuration.
 
@@ -30,19 +30,23 @@ An example of using a hybrid dotnet/Java-based Apache Storm topology to work wit
 	
 	For information on creating an Event Hub and policies, see [Get Started with Event Hubs](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-csharp-ephcs-getstarted/).
 
-* **Azure Table Storage** - you need to create a Storage Account
-
-    * **Storage account name** - the name of the storage account
-
-    * **Storage account key** - the key of the storage account
-
 * **Storm on HDInsight cluster** - the Azure HDInsight cluster that you will submit the topologies to
+
+## SCP.NET package version
+
+The SCP.NET package version that you use for this project depends on the version of Storm installed on your HDInsight cluster. Use the following table to determine what SCP.NET version you must use in your project:
+
+| HDInsight version | Apache Storm version | SCP.NET version |
+|:-----------------:|:--------------------:|:---------------:|
+| 3.3 | 0.10.# | 0.10.#.# |
+| 3.4 | 0.10.# | 0.10.#.# |
+| 3.5 | 1.0.# | 1.0.#.# |
 
 ##Build and deploy
 
 The two topologies in this project work together - EventHubWriter writes events, while EventHubReader reads them. You can deploy them in any order, but when both are deployed, events should flow from the Writer, to the Reader, then to Table Storage.
 
-1. The configuration for Event Hub and Table Storage is stored in Application Settings. To access these, right-click on the project name (**EventHubWriter** or **EventHubReader**,) in **Solution Explorer** and select **Properties**, then select **Settings**. Fill in the values needed to connect to Azure Event Hub and (for the reader,) Azure Table Storage. For the **TableName** entry, enter the name of the table you want events to be stored in.
+1. The configuration for Event Hub and Table Storage is stored in the __App.config__ for each project. Fill in the values needed to connect to Azure Event Hub and (for the reader,) Azure Table Storage. For the **TableName** entry, enter the name of the table you want events to be stored in.
 
 2. In **Server Explorer**, right-click the solution (**EventHubExample**,) and select **Build**. This will restore any missing packages and build the project.
 
@@ -60,11 +64,16 @@ Once the topology has been submitted, the **Storm Topologies Viewer** should app
 
 ##View output
 
-1. In **Server Explorer**, expand **Azure**, **Storage**, and the **Storage Account** you created earlier.
+1. In **Storm Topologies Viewer**, select the  **EventHubWriter** topology.
 
-2. Expand **Tables**, then double click on the table you used as the output for the **EventHubReader**.
+2. In the graph view, double-click the __LogBolt__ component. This will open the __Component Summary__ page for the bolt.
 
-3. Once the table editor appears, you should see that the table has been populated with the random data created by the EventHubWriter, which is read by the EventHubReader, and then stored into Table Storage.
+3. In the __Executors__ section, select one of the links in the __Port__ column. This will display information logged by the component. The logged information is similar to the following:
+
+        2016-10-20 13:26:44.186 m.s.s.b.ScpNetBolt [INFO] Processing tuple: source: com.microsoft.eventhubs.spout.EventHubSpout:7, stream: default, id: {5769732396213255808=520853934697489134}, [{"deviceId":3,"deviceValue":1379915540}]
+        2016-10-20 13:26:44.234 m.s.s.b.ScpNetBolt [INFO] Processing tuple: source: com.microsoft.eventhubs.spout.EventHubSpout:7, stream: default, id: {7154038361491319965=4543766486572976404}, [{"deviceId":3,"deviceValue":459399321}]
+        2016-10-20 13:26:44.335 m.s.s.b.ScpNetBolt [INFO] Processing tuple: source: com.microsoft.eventhubs.spout.EventHubSpout:6, stream: default, id: {513308780877039680=-7571211415704099042}, [{"deviceId":5,"deviceValue":845561159}]
+        2016-10-20 13:26:44.445 m.s.s.b.ScpNetBolt [INFO] Processing tuple: source: com.microsoft.eventhubs.spout.EventHubSpout:7, stream: default, id: {-2409895457033895206=5479027861202203517}, [{"deviceId":8,"deviceValue":2105860655}]
 
 ##Kill the topologies
 
