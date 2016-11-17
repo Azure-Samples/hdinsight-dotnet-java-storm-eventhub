@@ -51,7 +51,7 @@ namespace EventHubWriter
             //Create constructor for the Java bolt
             JavaComponentConstructor constructor =
                 JavaComponentConstructor.CreateFromClojureExpr(
-                String.Format(@"(com.microsoft.eventhubs.bolt.EventHubBolt. (com.microsoft.eventhubs.bolt.EventHubBoltConfig. " +
+                String.Format(@"(org.apache.storm.eventhubs.bolt.EventHubBolt. (org.apache.storm.eventhubs.bolt.EventHubBoltConfig. " +
                 @"""{0}"" ""{1}"" ""{2}"" ""{3}"" ""{4}"" {5}))",
                 ConfigurationManager.AppSettings["EventHubPolicyName"],
                 ConfigurationManager.AppSettings["EventHubPolicyKey"],
