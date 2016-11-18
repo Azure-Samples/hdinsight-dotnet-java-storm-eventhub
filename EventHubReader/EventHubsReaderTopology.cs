@@ -32,7 +32,7 @@ namespace EventHubReader
             var eventHubPartitions = int.Parse(ConfigurationManager.AppSettings["EventHubPartitions"]);
             // Add the EvetnHubSpout to the topology. Set parallelism hint to the number of partitions
             topologyBuilder.SetEventHubSpout(
-                "com.microsoft.eventhubs.spout.EventHubSpout",
+                "EventHubSpout",
                 new EventHubSpoutConfig(
                     ConfigurationManager.AppSettings["EventHubSharedAccessKeyName"],
                     ConfigurationManager.AppSettings["EventHubSharedAccessKey"],
@@ -49,6 +49,7 @@ namespace EventHubReader
             var boltConfig = new StormConfig();
 
             // Add the logbolt to the topology
+            // Use a serializer to understand data from the Java component
             topologyBuilder.SetBolt(
                 typeof(LogBolt).Name,
                 LogBolt.Get,
@@ -57,7 +58,8 @@ namespace EventHubReader
                 true
                 ).
                 DeclareCustomizedJavaSerializer(javaSerializerInfo).
-                shuffleGrouping("com.microsoft.eventhubs.spout.EventHubSpout");
+                shuffleGrouping("EventHubSpout");
+
             // Create a configuration for the topology
             var topologyConfig = new StormConfig();
             // Increase max pending for the spout
