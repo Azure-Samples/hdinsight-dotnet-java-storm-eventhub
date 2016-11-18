@@ -36,7 +36,7 @@ namespace EventHubWriter
             //C# components
             List<string> javaDeserializerInfo =
                 new List<string>() { "microsoft.scp.storm.multilang.CustomizedInteropJSONDeserializer", "java.lang.String" };
-            
+
             //Set the spout
             topologyBuilder.SetSpout(
                 "Spout",
@@ -51,8 +51,8 @@ namespace EventHubWriter
             //Create constructor for the Java bolt
             JavaComponentConstructor constructor =
                 JavaComponentConstructor.CreateFromClojureExpr(
-                String.Format(@"(org.apache.storm.eventhubs.bolt.EventHubBolt. (org.apache.storm.eventhubs.bolt.EventHubBoltConfig. " +
-                @"""{0}"" ""{1}"" ""{2}"" ""{3}"" ""{4}"" {5}))",
+                    String.Format(@"(org.apache.storm.eventhubs.bolt.EventHubBolt. (org.apache.storm.eventhubs.bolt.EventHubBoltConfig. " +
+                    @"""{0}"" ""{1}"" ""{2}"" ""{3}"" ""{4}"" {5}))",
                 ConfigurationManager.AppSettings["EventHubPolicyName"],
                 ConfigurationManager.AppSettings["EventHubPolicyKey"],
                 ConfigurationManager.AppSettings["EventHubNamespace"],

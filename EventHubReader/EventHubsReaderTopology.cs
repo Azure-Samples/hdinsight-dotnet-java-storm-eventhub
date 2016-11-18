@@ -31,7 +31,6 @@ namespace EventHubReader
             // Get the number of partitions in EventHub
             var eventHubPartitions = int.Parse(ConfigurationManager.AppSettings["EventHubPartitions"]);
             // Add the EvetnHubSpout to the topology. Set parallelism hint to the number of partitions
-            // Use a serializer to write in a common format for interop with .NET components
             topologyBuilder.SetEventHubSpout(
                 "EventHubSpout",
                 new EventHubSpoutConfig(
@@ -40,8 +39,11 @@ namespace EventHubReader
                     ConfigurationManager.AppSettings["EventHubNamespace"],
                     ConfigurationManager.AppSettings["EventHubEntityPath"],
                     eventHubPartitions),
-                eventHubPartitions)
-                .DeclareCustomizedJavaDeserializer(new List<string> { "microsoft.scp.storm.multilang.CustomizedInteropJSONSerializer" });
+                eventHubPartitions);
+
+            // Set a customized JSON Serializer to serialize a Java object (emitted by Java Spout) into JSON string
+            // Here, full name of the Java JSON Serializer class is required
+            List<string> javaSerializerInfo = new List<string>() { "microsoft.scp.storm.multilang.CustomizedInteropJSONSerializer" };
 
             // Create a config for the bolt. It's unused here
             var boltConfig = new StormConfig();
@@ -54,7 +56,10 @@ namespace EventHubReader
                 new Dictionary<string, List<string>>(),
                 eventHubPartitions,
                 true
-                ).DeclareCustomizedJavaSerializer(new List<string> { "microsoft.scp.storm.multilang.CustomizedInteropJSONSerializer" });
+                ).
+                DeclareCustomizedJavaSerializer(javaSerializerInfo).
+                shuffleGrouping("EventHubSpout");
+
             // Create a configuration for the topology
             var topologyConfig = new StormConfig();
             // Increase max pending for the spout
