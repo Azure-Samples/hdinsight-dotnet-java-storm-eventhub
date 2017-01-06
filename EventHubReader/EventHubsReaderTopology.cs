@@ -45,7 +45,8 @@ namespace EventHubReader
                 */
             // The following is an example of how to create the same spout using the JavaComponentConstructor,
             // which allows us to use UTF-8 encoding for reads.
-            //
+            // NOTE!!!! This only works with the 9.5 version of the Event Hub components, which are located at
+            // https://github.com/hdinsight/hdinsight-storm-examples/blob/master/lib/eventhubs/
             // Create the UTF-8 data scheme
             var schemeConstructor = new JavaComponentConstructor("com.microsoft.eventhubs.spout.UnicodeEventDataScheme");
             // Create the EventHubSpoutConfig
