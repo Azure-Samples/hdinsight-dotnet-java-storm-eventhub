@@ -30,7 +30,9 @@ namespace EventHubReader
             TopologyBuilder topologyBuilder = new TopologyBuilder(typeof(EventHubReader).Name + DateTime.Now.ToString("yyyyMMddHHmmss"));
             // Get the number of partitions in EventHub
             var eventHubPartitions = int.Parse(ConfigurationManager.AppSettings["EventHubPartitions"]);
-            // Add the EvetnHubSpout to the topology. Set parallelism hint to the number of partitions
+            // Add the EvetnHubSpout to the topology using the SetEventHubSpout and EventHubSpoutConfig helper methods.
+            // NOTE: These methods set the spout to read data in a String encoding.
+            /*
             topologyBuilder.SetEventHubSpout(
                 "EventHubSpout",
                 new EventHubSpoutConfig(
@@ -40,6 +42,39 @@ namespace EventHubReader
                     ConfigurationManager.AppSettings["EventHubEntityPath"],
                     eventHubPartitions),
                 eventHubPartitions);
+                */
+            // The following is an example of how to create the same spout using the JavaComponentConstructor,
+            // which allows us to use UTF-8 encoding for reads.
+            // NOTE!!!! This only works with the 9.5 version of the Event Hub components, which are located at
+            // https://github.com/hdinsight/hdinsight-storm-examples/blob/master/lib/eventhubs/
+            // Create the UTF-8 data scheme
+            var schemeConstructor = new JavaComponentConstructor("com.microsoft.eventhubs.spout.UnicodeEventDataScheme");
+            // Create the EventHubSpoutConfig
+            var eventHubSpoutConfig = new JavaComponentConstructor(
+                "com.microsoft.eventhubs.spout.EventHubSpoutConfig",
+                new List<Tuple<string, object>>()
+                {
+                    //comment
+                    Tuple.Create<string, object>(JavaComponentConstructor.JAVA_LANG_STRING, ConfigurationManager.AppSettings["EventHubSharedAccessKeyName"]),
+                    //comment
+                    Tuple.Create<string, object>(JavaComponentConstructor.JAVA_LANG_STRING, ConfigurationManager.AppSettings["EventHubSharedAccessKey"]),
+                    Tuple.Create<string, object>(JavaComponentConstructor.JAVA_LANG_STRING, ConfigurationManager.AppSettings["EventHubNamespace"]),
+                    Tuple.Create<string, object>(JavaComponentConstructor.JAVA_LANG_STRING, ConfigurationManager.AppSettings["EventHubEntityPath"]),
+                    Tuple.Create<string, object>("int", eventHubPartitions),
+                    Tuple.Create<string, object>("com.microsoft.eventhubs.spout.IEventDataScheme", schemeConstructor)
+                }
+               );
+            // Create the spout
+            var eventHubSpout = new JavaComponentConstructor(
+                "com.microsoft.eventhubs.spout.EventHubSpout",
+                new List<Tuple<string, object>>()
+                {
+                    Tuple.Create<string, object>("com.microsoft.eventhubs.spout.EventHubSpoutConfig", eventHubSpoutConfig)
+                }
+               );
+            // Set the spout in the topology
+            topologyBuilder.SetJavaSpout("EventHubSpout", eventHubSpout, eventHubPartitions);  
+            
 
             // Set a customized JSON Serializer to serialize a Java object (emitted by Java Spout) into JSON string
             // Here, full name of the Java JSON Serializer class is required
