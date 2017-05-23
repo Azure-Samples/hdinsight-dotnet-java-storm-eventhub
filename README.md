@@ -1,4 +1,4 @@
-(---
+---
 services: hdinsight
 platforms: dotnet,java
 author: blackmist
