@@ -23,7 +23,7 @@ NOTE: This example requires a Storm on HDInsight cluster version 3.5. There are 
 
 * **HDInsight Tools for Visual Studio** - [http://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-visual-studio-tools-get-started/](http://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-visual-studio-tools-get-started/) has the steps to install and configure. This provides C# Storm topology templates and some utilities for working with HDInsight
 
-* **eventhubs-storm-spout** jar file - this contains the Event Hub Spout and Bolt. Download the version at [https://000aarperiscus.blob.core.windows.net/certs/storm-eventhubs-1.0.2-jar-with-dependencies.jar](https://000aarperiscus.blob.core.windows.net/certs/storm-eventhubs-1.0.2-jar-with-dependencies.jar) for use with this example.
+* **eventhubs-storm-spout** jar file - this contains the Event Hub Spout and Bolt. Download the version at [https://github.com/hdinsight/hdinsight-storm-examples/tree/master/HDI3.5/lib]https://github.com/hdinsight/hdinsight-storm-examples/tree/master/HDI3.5/lib) for use with this example.
 
 * **Azure Event Hub** - you need to create an Event Hub, with two policies defined - one that can send, and one that can listen. You will need the following information from the Event Hub configuration.
 
