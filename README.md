@@ -8,11 +8,11 @@ author: blackmist
 
 An example of using a hybrid dotnet/Java-based Apache Storm topology to work with Azure Event Hubs.
 
-NOTE: This example requires a Storm on HDInsight cluster version 3.5. There are breaking changes 
+NOTE: This example requires a Storm on HDInsight cluster version 3.5 or 3.6.
 
 ##Prerequisites
 
-* **Visual Studio 2013 or 2015**
+* **Visual Studio 2015 or 2017**
 
 * **Azure SDK for Visual Studio** - at least version 2.5. This gives you the Azure entries in Server Explorer and the ability to view things like table storage
 
@@ -21,9 +21,9 @@ NOTE: This example requires a Storm on HDInsight cluster version 3.5. There are 
     * The **JAVA_HOME** environment variable must point to the directory that contains Java.
     * The **%JAVA_HOME%/bin** directory must be in the path
 
-* **HDInsight Tools for Visual Studio** - [http://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-visual-studio-tools-get-started/](http://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-visual-studio-tools-get-started/) has the steps to install and configure. This provides C# Storm topology templates and some utilities for working with HDInsight
+* **HDInsight Tools for Visual Studio** - [http://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-visual-studio-tools-get-started/](http://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-visual-studio-tools-get-started/) has the steps to install and configure.
 
-* **eventhubs-storm-spout** jar file - this contains the Event Hub Spout and Bolt. Download the version at [https://github.com/hdinsight/hdinsight-storm-examples/tree/master/HDI3.5/lib](https://github.com/hdinsight/hdinsight-storm-examples/tree/master/HDI3.5/lib) for use with this example.
+* **eventhubs-storm-spout** jar file - this contains the Event Hub Spout and Bolt. Download the version at [https://github.com/hdinsight/mvn-repo/raw/master/org/apache/storm/storm-eventhubs/1.1.0.1/storm-eventhubs-1.1.0.1.jar](https://github.com/hdinsight/mvn-repo/raw/master/org/apache/storm/storm-eventhubs/1.1.0.1/storm-eventhubs-1.1.0.1.jar) for use with this example.
 
 * **Azure Event Hub** - you need to create an Event Hub, with two policies defined - one that can send, and one that can listen. You will need the following information from the Event Hub configuration.
 
@@ -37,13 +37,11 @@ NOTE: This example requires a Storm on HDInsight cluster version 3.5. There are 
 	
 	For information on creating an Event Hub and policies, see [Get Started with Event Hubs](https://azure.microsoft.com/en-us/documentation/articles/event-hubs-csharp-ephcs-getstarted/).
 
-* **Storm on HDInsight cluster** - the Azure HDInsight cluster that you will submit the topologies to. This example _requires_ Storm on HDInsight 3.5.
-
-    Storm on HDInsight 3.5 includes Storm 1.0.1. There are breaking changes in the class namespace for Storm components, which cause problems if you try to use this example against earlier versions of Storm.
+* **Storm on HDInsight cluster** - the Azure HDInsight cluster that you will submit the topologies to. This example _requires_ Storm on HDInsight 3.5 or 3.6.
 
 ## SCP.NET package version
 
-The SCP.NET package version that you use for this project depends on the version of Storm installed on your HDInsight cluster. Use SCP 1.0.#.# with this example, since it is for Storm 1.0.#, which is on HDInsight 3.5.
+The SCP.NET package version that you use for this project depends on the version of Storm installed on your HDInsight cluster. Use SCP 1.0.#.# with this example.
 
 ##Build and deploy
 
