@@ -17,7 +17,6 @@ namespace EventHubWriter
     /// </summary>
     public class Spout : ISCPSpout
     {
-        //Local context
         private Context ctx;
         private Random r = new Random();
 
@@ -27,17 +26,19 @@ namespace EventHubWriter
         /// <param name="ctx">Topology context</param>
         public Spout(Context ctx)
         {
-            //Topology context > local context
+            // Store the context
             this.ctx = ctx;
-            //Define the output stream
+
+            // Define the schema for the output stream
             Dictionary<string, List<Type>> outputSchema = new Dictionary<string, List<Type>>();
-            //It's a string
+            // Output is a tuple containing a single string field
             outputSchema.Add("default", new List<Type>() { typeof(string) });
+            // Declare the stream
             this.ctx.DeclareComponentSchema(new ComponentStreamSchema(null, outputSchema));
-            //Declare a custom serializer - this matches up with
-            //the serializer declared in Program.cs
+            // Use the interop JSON serializer
             this.ctx.DeclareCustomizedSerializer(new CustomizedInteropJSONSerializer());
         }
+
         /// <summary>
         /// Gets a new instance of this component
         /// </summary>
@@ -48,29 +49,32 @@ namespace EventHubWriter
         {
             return new Spout(ctx);
         }
+
         /// <summary>
         /// Emit data to the stream
         /// </summary>
         /// <param name="parms"></param>
         public void NextTuple(Dictionary<string, Object> parms)
         {
-            //Create a JSON object
+            // Create a JSON object
             JObject eventData = new JObject();
-            //Add some properties
+            // Add some properties
             eventData.Add("deviceId", r.Next(10));
-            eventData.Add("deviceValue", r.Next());
-            //Emit it as a string value
-            ctx.Emit(new Values(eventData.ToString(Formatting.None)));
+            eventData.Add("deviceValue", r.Next(100));
+            // Emit it
+            this.ctx.Emit(new Values(eventData.ToString(Formatting.None)));
+            // Log data
+            Context.Logger.Info("Spout emitting {0}", eventData.ToString(Formatting.None));
         }
 
         public void Ack(long seqId, Dictionary<string, Object> parms)
         {
-
+            // not used
         }
 
         public void Fail(long seqId, Dictionary<string, Object> parms)
         {
-
+            // not used
         }
     }
 }

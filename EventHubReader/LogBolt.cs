@@ -1,18 +1,23 @@
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+using System.Threading;
 using Microsoft.SCP;
-using System.Diagnostics;
+using Microsoft.SCP.Rpc.Generated;
 
 namespace EventHubReader
 {
-    /// <summary>
-    /// Log data read from EventHubs
-    /// </summary>
     public class LogBolt : ISCPBolt
     {
-        // Per-instance context
         Context ctx;
 
+        /// <summary>
+        /// Initialize the LogBolt
+        /// </summary>
+        /// <param name="ctx">SCP Context instance</param>
         public LogBolt(Context ctx)
         {
             //Save the context
@@ -31,24 +36,6 @@ namespace EventHubReader
         }
 
         /// <summary>
-        /// The Execute() function will be called, when a new tuple is available.
-        /// </summary>
-        /// <param name="tuple"></param>
-        public void Execute(SCPTuple tuple)
-        {
-            //Get the string data from the tuple
-            string eventValue = (string)tuple.GetValue(0);
-            if (eventValue != null)
-            {
-                //Log the data
-                Context.Logger.Info("Received data: " + eventValue);
-                //ACK the tuple so the spout knows it was processed
-                //If we don't ACK, the EventHubSpout can stop receiving; it expects ACKs
-                this.ctx.Ack(tuple);
-            }
-        }
-
-        /// <summary>
         /// Returns a new instance of the bolt
         /// </summary>
         /// <param name="ctx">SCP Context instance</param>
@@ -57,6 +44,24 @@ namespace EventHubReader
         public static LogBolt Get(Context ctx, Dictionary<string, Object> parms)
         {
             return new LogBolt(ctx);
+        }
+
+        /// <summary>
+        /// The Execute() function is called, when a new tuple is available.
+        /// </summary>
+        /// <param name="tuple"></param>
+        public void Execute(SCPTuple tuple)
+        {
+            //Get the string data from the tuple
+            string eventValue = tuple.GetString(0);
+            if (eventValue != null)
+            {
+                //Log the data
+                Context.Logger.Info("Received data: " + eventValue);
+                //ACK the tuple so the spout knows it was processed
+                //If we don't ACK, the EventHubSpout can stop receiving; it expects ACKs
+                this.ctx.Ack(tuple);
+            }
         }
     }
 }
